@@ -9,6 +9,7 @@ A comprehensive data analytics platform for CMS Home Health agency data that ena
 - **Quality Analysis**: Filter by quality scores and service offerings
 - **Market Analysis**: Analyze competitive landscapes and market share
 - **Geographic Coverage**: Understand provider service areas and coverage
+- **🏜️ Coverage Deserts**: NEW - Identify underserved areas and market opportunities
 
 ### 🤖 AI-Powered Capabilities
 - **Vector Database**: ChromaDB integration for semantic search
@@ -20,6 +21,81 @@ A comprehensive data analytics platform for CMS Home Health agency data that ena
 - **Market Share**: Provider patients / total county patients
 - **Quality Scoring**: Composite scores from multiple CMS quality metrics
 - **Competitive Positioning**: Rank providers within geographic areas
+
+### 🏗️ Modular Architecture
+The application has been refactored into a clean, modular structure:
+
+- **Analytics Modules** (`src/analytics/`): Specialized analytics components
+- **UI Pages** (`src/ui/pages/`): Individual page implementations  
+- **Reusable Components** (`src/ui/components/`): Common UI widgets
+- **Test Coverage** (`tests/`): Comprehensive testing framework
+
+See [docs/MODULAR_ARCHITECTURE.md](docs/MODULAR_ARCHITECTURE.md) for detailed documentation.
+
+## 🏃 Quick Start
+
+### Running the Application
+
+**New Modular Application (Recommended):**
+```bash
+streamlit run app.py
+```
+
+**Original Application (Deprecated):**
+```bash
+streamlit run legacy/streamlit_app_simple.py
+```
+
+### Using the Analytics API
+```python
+from src.analytics import CMSAnalytics
+
+# Initialize analytics
+analytics = CMSAnalytics()
+
+# Find coverage deserts
+deserts = analytics.identify_coverage_deserts(
+    radius_miles=25,
+    min_medicare_population=100,
+    max_providers_in_radius=2
+)
+
+# Calculate market potential
+market_potential = analytics.calculate_market_potential(['90210', '10001'])
+```
+
+## 📁 Project Structure
+
+```
+cms-data-explorer-hh/
+├── 📁 src/                     # Source code (modular architecture)
+│   ├── 📁 analytics/           # Analytics modules
+│   │   ├── base.py            # Core analytics class
+│   │   ├── geographic.py      # Location-based analysis
+│   │   ├── market.py          # Market analysis
+│   │   ├── quality.py         # Quality benchmarks
+│   │   ├── rural_urban.py     # Rural/urban classification
+│   │   └── coverage_deserts.py # Coverage desert analysis (NEW)
+│   ├── 📁 ui/                  # User interface modules
+│   │   ├── app.py             # Main application
+│   │   ├── 📁 pages/          # Individual page modules
+│   │   └── 📁 components/     # Reusable UI components
+│   ├── 📁 data/               # Data processing modules
+│   └── 📁 utils/              # Utility functions
+├── 📁 data/                    # Data files
+│   ├── 📁 raw/                # Raw CSV/Excel files
+│   ├── 📁 processed/          # SQLite database
+│   └── 📁 docs/               # Data documentation
+├── 📁 scripts/                 # Utility scripts
+├── 📁 tests/                   # Test modules
+├── 📁 docs/                    # Documentation
+├── 📁 legacy/                  # Deprecated files
+├── app.py                      # Main entry point
+├── requirements.txt            # Python dependencies
+├── license.txt                 # License information
+├── setup.sh                   # Setup script
+└── README.md                   # This file
+```
 
 ## 🗂️ Data Sources
 
@@ -34,7 +110,7 @@ The platform processes several CMS data files:
 
 ## 🏗️ Architecture
 
-### Data Processing Pipeline (`data_processor.py`)
+### Data Processing Pipeline (`src/utils/data_processing.py`)
 ```python
 # Load and clean raw CSV data
 dataframes = processor.load_raw_data()
@@ -76,35 +152,35 @@ results = vector_db.semantic_search("high quality providers in Texas")
 context = vector_db.rag_query("Find the best home health providers near me")
 ```
 
-## 🔧 Installation & Setup
+## 🛠️ Installation & Setup
 
-### 1. Install Dependencies
+### Prerequisites
+- Python 3.8+
+- pip package manager
+
+### Quick Setup
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd cms-data-explorer-hh
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Run setup script (if needed)
+bash setup.sh
+
+# Start the application
+streamlit run app.py
 ```
 
-### 2. Process the Data
-```bash
-python data_processor.py
-```
-This will:
-- Load and clean all CSV files
-- Calculate derived metrics (patient volume, market share, quality scores)
-- Create SQLite database (`cms_homehealth.db`)
-
-### 3. Initialize Vector Database
-```bash
-python vector_database.py
-```
-This will:
-- Create embeddings for all providers, counties, and benchmarks
-- Set up ChromaDB collections for semantic search
-- Enable AI-powered queries
-
-### 4. Launch the Web Application
-```bash
-streamlit run streamlit_app.py
-```
+### Dependencies
+Key packages used:
+- **Streamlit**: Web application framework
+- **Pandas**: Data manipulation and analysis
+- **Plotly**: Interactive visualizations
+- **SQLite3**: Database operations
+- **ChromaDB**: Vector database for semantic search
 
 ## 📱 User Interface
 
